@@ -38,20 +38,74 @@ import MDButton from "components/MDButton";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
+import React, { useRef } from "react";
+import axios from "axios";
+
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import logo1 from "assets/images/logo1.png";
+import { useNavigate } from "react-router-dom";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
 
+  const navigate = useNavigate();
+  //const history = useRef(null);
+  const [username, setUserName] = useState("");
+  const [password, setPassWord] = useState("");
+  const [isLoad, setIsLoad] = useState(false);
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    if (isLoad) return;
+    setIsLoad(true);
+
+    const data = {
+      username: username,
+      password: password,
+    };
+    console.log("Sending data:", data);
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/springfever/api/auth/signinV2",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json", // Ensure the Content-Type is set
+          },
+        }
+      );
+      console.log("Response received", response.data);
+
+      navigate("/rechercher/components", { state: { UserInfo: data } });
+
+      // Handle successful login here (e.g., save token, redirect)
+    } catch (error) {
+      console.error("Error during request", error);
+      if (error.response) {
+        // Server responded with a status code out of 2xx range
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.error("Request data:", error.request);
+      } else {
+        // Something else caused the error
+        console.error("Error message:", error.message);
+      }
+    } finally {
+      setIsLoad(false);
+    }
+  };
+
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   return (
-    <BasicLayout image={bgImage}>
+    <BasicLayout image={logo1}>
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          bgColor="warning"
           borderRadius="lg"
           coloredShadow="info"
           mx={2}
@@ -60,7 +114,7 @@ function Basic() {
           mb={1}
           textAlign="center"
         >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+          <MDTypography variant="h3" fontWeight="medium" color="light" mt={1}>
             Sign in
           </MDTypography>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
@@ -82,12 +136,27 @@ function Basic() {
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
+          <MDBox component="form" role="form" onSubmit={handleSignIn}>
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+                label="Email"
+                fullWidth
+                autoComplete="off"
+                required
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                value={password}
+                onChange={(e) => setPassWord(e.target.value)}
+                type="password"
+                label="Password"
+                fullWidth
+                autoComplete="off"
+                required
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -102,7 +171,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton type="submit" variant="gradient" color="warning" fullWidth>
                 sign in
               </MDButton>
             </MDBox>
@@ -113,7 +182,7 @@ function Basic() {
                   component={Link}
                   to="/authentication/sign-up"
                   variant="button"
-                  color="info"
+                  color="error"
                   fontWeight="medium"
                   textGradient
                 >

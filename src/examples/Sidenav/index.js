@@ -53,12 +53,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
 
-  let textColor = "white";
+  let textColor = "warning";
 
   if (transparentSidenav || (whiteSidenav && !darkMode)) {
-    textColor = "dark";
+    textColor = "warning";
   } else if (whiteSidenav && darkMode) {
-    textColor = "inherit";
+    textColor = "warning";
   }
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
@@ -182,14 +182,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <MDBox p={2} mt="auto">
         <MDButton
           component="a"
-          href="https://www.creative-tim.com/product/material-dashboard-pro-react"
+          href="/singin"
           target="_blank"
           rel="noreferrer"
           variant="gradient"
-          color={sidenavColor}
+          color="warning"
           fullWidth
         >
-          upgrade to pro
+          Disconnect
         </MDButton>
       </MDBox>
     </SidenavRoot>

@@ -42,6 +42,7 @@ export default styled(Box)(({ theme, ownerState }) => {
     "primary",
     "secondary",
     "info",
+    "orange",
     "success",
     "warning",
     "error",
@@ -51,6 +52,8 @@ export default styled(Box)(({ theme, ownerState }) => {
 
   const validColors = [
     "transparent",
+    "orange",
+
     "white",
     "black",
     "primary",

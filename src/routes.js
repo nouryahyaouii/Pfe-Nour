@@ -44,14 +44,35 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Rechercher from "layouts/rechercher/components";
 
+import React from "react";
+import { Link } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
 const routes = [
   {
+    key: "sign-in",
+    route: "/authentication/sign-in",
+    component: <SignIn />,
+  },
+  {
+    key: "sign-up",
+    route: "/authentication/sign-up",
+    component: <SignUp />,
+  },
+  {
     type: "collapse",
-    name: "Dashboard",
+    name: "Rechercher",
+    key: "rechercher",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/rechercher/components",
+    component: <Rechercher />,
+  },
+  {
+    type: "collapse",
+    name: "Consulter Fiche SAV",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
@@ -59,7 +80,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
+    name: "Consulter Fiche Sinistre",
     key: "tables",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
@@ -67,7 +88,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Billing",
+    name: "Consulter bon sav",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
@@ -75,11 +96,59 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "RTL",
+    name: "Consulter Assurance",
     key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+    icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/rtl",
     component: <RTL />,
+  },
+  {
+    type: "collapse",
+    name: "Recherche Decharge",
+    key: "profile",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/profile",
+    component: <Profile />,
+  },
+
+  {
+    type: "collapse",
+    name: "Suivi point de collecte",
+    key: "sign-",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/",
+    component: <SignIn />,
+  },
+  {
+    type: "collapse",
+    name: "Go for SWAPP",
+    key: "profilee",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "",
+    component: <Profile />,
+  },
+
+  {
+    type: "collapse",
+    name: "Suivi Fiche Sinistre",
+    key: "sign-u",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/authentication/sign-in",
+    component: <SignUp />,
+  },
+  {
+    type: "collapse",
+    name: "Suivi Retour Réparateurs",
+    key: "profil",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/",
+    haveChildren: true,
+    children: [
+      { name: "Expedier reparateur interne", route: "/interne" },
+      { name: "Expedier reparateur externe", route: "/externe" },
+      { name: "Recu reparateur interne", route: "/recuInterne" },
+      { name: "Recu reparateur externe", route: "/recuExterne" },
+    ],
   },
   {
     type: "collapse",
@@ -88,30 +157,6 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
-  },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
   },
 ];
 
