@@ -20,6 +20,7 @@ import { faSearch, faPrint } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import moment from "moment";
 
 export default function InterventionSearch() {
   const [interventionId, setInterventionId] = useState("");
@@ -29,7 +30,7 @@ export default function InterventionSearch() {
   const getInterventionById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/intervention/getInterventionById/${interventionId}`
+        `http://localhost:8089/api/v1/springfever/api/intervention/getInterventionby/${interventionId}`
       );
       setInterventionData(response.data);
       setError(null);
@@ -63,6 +64,9 @@ export default function InterventionSearch() {
     mywindow.print();
     return true;
   };
+  const formatDate = (createdAt) => {
+    return moment(createdAt).format("YYYY-MM-DD HH:mm:ss"); // Adjust the format as needed
+  };
 
   return (
     <DashboardLayout>
@@ -77,10 +81,7 @@ export default function InterventionSearch() {
               onChange={handleInputChange}
               className="px-4 py-2 rounded-lg border border-gray-300 w-full"
             />
-            <button
-              onClick={handleSearch}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg ml-2 flex items-center"
-            >
+            <button onClick={handleSearch} className="custom-btn btn-5">
               <FontAwesomeIcon icon={faSearch} className="mr-2" />
               Rechercher
             </button>
@@ -90,7 +91,12 @@ export default function InterventionSearch() {
 
           {interventionData && (
             <div id="interventionDetails" className="voucher-container">
-              <div className="voucher-header text-center">Détails de l intervention</div>
+              <div
+                className="voucher-header text-center"
+                style={{ fontWeight: "bold", fontSize: "29px" }}
+              >
+                Détails de l intervention
+              </div>
               <table className="voucher-table mt-4">
                 <thead>
                   <tr className="bg-gray-200">
@@ -104,18 +110,22 @@ export default function InterventionSearch() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="px-4 py-2 border text-center">{interventionData.id}</td>
-                    <td className="px-4 py-2 border text-center">{interventionData.description}</td>
+                    <td className="px-4 py-2 border text-center">{interventionData?.id}</td>
                     <td className="px-4 py-2 border text-center">
-                      {new Date(interventionData.createdAt).toLocaleDateString()}
+                      {interventionData?.description}
                     </td>
                     <td className="px-4 py-2 border text-center">
-                      {interventionData.device.brand}
+                      {formatDate(interventionData?.createdAt)}
                     </td>
                     <td className="px-4 py-2 border text-center">
-                      {interventionData.device.model}
+                      {interventionData?.device?.brand}
                     </td>
-                    <td className="px-4 py-2 border text-center">{interventionData.device.imei}</td>
+                    <td className="px-4 py-2 border text-center">
+                      {interventionData?.device?.model}
+                    </td>
+                    <td className="px-4 py-2 border text-center">
+                      {interventionData?.device?.imei}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -123,7 +133,7 @@ export default function InterventionSearch() {
                 <button
                   id="printButton"
                   onClick={handlePrint}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center"
+                  className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center"
                 >
                   <FontAwesomeIcon icon={faPrint} className="mr-2" />
                   Imprimer

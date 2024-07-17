@@ -31,6 +31,7 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
+import SubMenu from "examples/Sidenav/submenu";
 
 // Material Dashboard 2 React example components
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
@@ -178,11 +179,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           (darkMode && !transparentSidenav && whiteSidenav)
         }
       />
-      <List>{renderRoutes}</List>
+
+      <div>
+        {routes.map((route, index) => (
+          <SubMenu item={route} key={index} />
+        ))}
+      </div>
       <MDBox p={2} mt="auto">
         <MDButton
           component="a"
-          href="/singin"
+          href="/authentication/sign-in"
           target="_blank"
           rel="noreferrer"
           variant="gradient"

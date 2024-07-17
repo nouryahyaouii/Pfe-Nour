@@ -65,7 +65,7 @@ function Cover() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8081/api/v1/springfever/api/auth/signUpV3",
+        "http://localhost:8089/api/v1/springfever/api/auth/signUpV3",
         formData,
         {
           headers: {

@@ -50,18 +50,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
+//import FicheSav from "layouts/ficheSav";
+import Decharge from "layouts/decharge";
+import Fichesav from "layouts/fichesav";
+import Bonsav from "layouts/bonsav";
+import Reparateur from "layouts/reparateur/interne";
+import Reparateurex from "layouts/reparateur/externe";
+import Recuint from "layouts/reparateur/recuInterne";
+import Recuext from "layouts/reparateur/recuExterne";
+import PointCollecte from "layouts/pointCollecte";
+import Swapp from "layouts/swapp";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SubMenu from "examples/Sidenav/submenu";
 
 const routes = [
-  {
-    key: "sign-in",
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    key: "sign-up",
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
   {
     type: "collapse",
     name: "Rechercher",
@@ -73,83 +76,82 @@ const routes = [
   {
     type: "collapse",
     name: "Consulter Fiche SAV",
-    key: "dashboard",
+    key: "fichesav",
     icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
+    route: "/fichesav",
+    component: <Fichesav />,
   },
-  {
-    type: "collapse",
-    name: "Consulter Fiche Sinistre",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
+
   {
     type: "collapse",
     name: "Consulter bon sav",
-    key: "billing",
+    key: "bonsav",
     icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
+    route: "/bonsav",
+    component: <Bonsav />,
   },
-  {
-    type: "collapse",
-    name: "Consulter Assurance",
-    key: "rtl",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
+
   {
     type: "collapse",
     name: "Recherche Decharge",
-    key: "profile",
+    key: "decharge",
     icon: <Icon fontSize="small">login</Icon>,
-    route: "/profile",
-    component: <Profile />,
+    route: "/decharge",
+    component: <Decharge />,
   },
 
   {
     type: "collapse",
     name: "Suivi point de collecte",
-    key: "sign-",
+    key: "pointCollecte",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/",
-    component: <SignIn />,
+    route: "/pointCollecte",
+    component: <PointCollecte />,
   },
   {
     type: "collapse",
     name: "Go for SWAPP",
-    key: "profilee",
+    key: "swapp",
     icon: <Icon fontSize="small">person</Icon>,
-    route: "",
-    component: <Profile />,
+    route: "/swapp",
+    component: <Swapp />,
   },
 
   {
     type: "collapse",
-    name: "Suivi Fiche Sinistre",
-    key: "sign-u",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignUp />,
-  },
-  {
-    type: "collapse",
     name: "Suivi Retour Réparateurs",
-    key: "profil",
+    key: "reparateur",
     icon: <Icon fontSize="small">person</Icon>,
-    route: "/",
+
     haveChildren: true,
     children: [
-      { name: "Expedier reparateur interne", route: "/interne" },
-      { name: "Expedier reparateur externe", route: "/externe" },
-      { name: "Recu reparateur interne", route: "/recuInterne" },
-      { name: "Recu reparateur externe", route: "/recuExterne" },
+      {
+        name: "Expedier reparateur interne",
+        route: "/reparateur/interne",
+        icon: <Icon fontSize="small">person</Icon>,
+        component: <Reparateur />,
+      },
+      {
+        name: "Expedier reparateur externe",
+        route: "/reparateur/externe",
+        icon: <Icon fontSize="small">person</Icon>,
+        component: <Reparateurex />,
+      },
+      {
+        name: "Recu reparateur interne",
+        route: "/reparateur/recuInterne",
+        icon: <Icon fontSize="small">person</Icon>,
+        component: <Recuint />,
+      },
+      {
+        name: "Recu reparateur externe",
+        route: "/reparateur/recuExterne",
+        icon: <Icon fontSize="small">person</Icon>,
+        component: <Recuext />,
+      },
     ],
   },
+
   {
     type: "collapse",
     name: "Notifications",
@@ -158,6 +160,31 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
+  {
+    key: "sign-in",
+    route: "/authentication/sign-in",
+    component: <SignIn />,
+  },
+  {
+    key: "sign-up",
+    route: "/authentication/sign-up",
+    component: <SignUp />,
+  },
 ];
+
+export const getRoutes = (allRoutes) =>
+  allRoutes.map((route) => {
+    if (route.children) {
+      return route.children.map((child) => (
+        <Route path={child.route} element={child.component} key={child.route} />
+      ));
+    }
+
+    if (route.route) {
+      return <Route path={route.route} element={route.component} key={route.route} />;
+    }
+
+    return null;
+  });
 
 export default routes;

@@ -4,9 +4,21 @@ import PropTypes from "prop-types";
 import "index.css";
 import "output.css";
 
-export default function FileCard({ onCancel, action, handleClientInfoChange }) {
+export default function FileCard({
+  onCancel,
+  action,
+  handleClientInfoChange,
+  handleInterventionDataChange,
+  data,
+}) {
   // State to store selected options for "Accessoires"
   const [selectedAccessoires, setSelectedAccessoires] = useState([]);
+
+  const [etatTerminal, setEtatTerminal] = useState("");
+  const [batterie, setBatterie] = useState("");
+  const [terminalDePret, setTerminalPret] = useState("");
+  const [workflow, setWorkflow] = useState("");
+  const [description, setDescription] = useState("");
 
   // Function to add an option to the second box for "Accessoires"
   const addToSecondBoxAccessoires = () => {
@@ -28,7 +40,7 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
 
   // Function to add an option to the second box for "Type de panne"
   const addToSecondBoxPanne = () => {
-    const selectedOption = document.getElementById("panne").value;
+    const selectedOption = document.getElementById("Typepanne").value;
     const r = selectedPanne.find((v) => v == selectedOption);
     if (r != undefined) return;
     setSelectedPanne([...selectedPanne, selectedOption]);
@@ -39,6 +51,31 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
     const updatedOptions = [...selectedPanne];
     updatedOptions.pop();
     setSelectedPanne(updatedOptions);
+  };
+
+  const handleEtatTerminalChange = (event) => {
+    setEtatTerminal(event.target.value);
+    handleInterventionDataChange("Terminaletat", event.target.value);
+  };
+
+  const handleBatterieChange = (event) => {
+    setBatterie(event.target.value);
+    handleInterventionDataChange("batterie", event.target.value);
+  };
+
+  const handleTerminalPretChange = (event) => {
+    setTerminalPret(event.target.value);
+    handleInterventionDataChange("Pretterminal", event.target.value);
+  };
+
+  const handleWorkflowChange = (event) => {
+    setWorkflow(event.target.value);
+    handleInterventionDataChange("workfloww", event.target.value);
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+    handleInterventionDataChange("descriptionn", event.target.value);
   };
 
   const cancel = () => {
@@ -137,29 +174,30 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
         <h2 className="font-bold mb-4">Material</h2>
         <div className="flex mb-4 items-center justify-between">
           <p className="text-sm font-medium text-gray-700">
-            Marque: <span className="font-bold ml-10">value</span>
+            Marque: <span className="font-bold ml-10">{data.brand}</span>
           </p>
           <p className="text-sm font-medium text-gray-700 ">
-            Num de serie/IMEI : <span className="font-bold ml-10">value</span>
+            Num de serie/IMEI : <span className="font-bold ml-10">{data.imei}</span>
           </p>
           <div>
-            <label htmlFor="etatTerminal" className="text-sm font-medium text-gray-700 mr-14">
+            <label htmlFor="Terminaletat" className="text-sm font-medium text-gray-700 mr-14">
               Etat terminal :
             </label>
             <select
-              name="etatTerminal"
-              id="etatTerminal"
+              name="Terminaletat"
+              id="Terminaletat"
               className="p-1 border rounded-lg mr-4"
               style={{ width: "100px" }}
+              onChange={handleEtatTerminalChange}
             >
-              <option value="option1">Bon Etat</option>
-              <option value="option2">Option 2</option>
+              <option value="Bon etat">Bon Etat</option>
+              <option value="Mauvais etat">Mauvais etat</option>
             </select>
           </div>
         </div>
         <div className="flex mb-4 items-center justify-between">
           <p className="text-sm font-medium text-gray-700 mr-2 ">
-            Modèle: <span className=" p-1 font-bold ml-10">value</span>
+            Modèle: <span className=" p-1 font-bold ml-10">{data.model}</span>
           </p>
           <div className="w-1/2 flex items-center">
             <label htmlFor="batterie" className="text-sm font-medium text-gray-700 mr-6 ml-16">
@@ -168,22 +206,24 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
             <div className="mr-4">
               <input
                 type="checkbox"
-                id="batterie1"
-                name="batterie"
-                value="batterie1"
+                id="Avec"
+                name="Avec"
+                value="Avec"
                 className="mr-1 border-gray-300 rounded-full"
+                onChange={handleBatterieChange}
               />
-              <label htmlFor="batterie1" className="mr-4">
+              <label htmlFor="Avec" className="mr-4">
                 Avec
               </label>
               <input
                 type="checkbox"
-                id="batterie2"
-                name="batterie"
-                value="batterie2"
+                id="Sans"
+                name="Sans"
+                value="Sans"
                 className="mr-1 border-gray-300 rounded-full"
+                onChange={handleBatterieChange}
               />
-              <label htmlFor="batterie2">Sans</label>
+              <label htmlFor="Sans">Sans</label>
             </div>
           </div>
         </div>
@@ -202,7 +242,7 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
             className="p-1 border rounded-lg mr-4 ml-3"
             style={{ width: "400px", height: "150px" }}
           >
-            <option value="chargeur">Chargeur 2</option>
+            <option value="chargeur">Chargeur </option>
             <option value="cableUSB">Câble USB</option>
           </select>
           <div className="flex flex-col items-center">
@@ -232,15 +272,15 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
 
         <div className="flex mb-4 items-center justify-between">
           <label
-            htmlFor="panne"
+            htmlFor="Typepanne"
             className="text-sm font-medium text-gray-700 mr-2"
             style={{ width: "150px" }}
           >
             Type de panne:
           </label>
           <select
-            id="panne"
-            name="panne"
+            id="Typepanne"
+            name="Typepanne"
             multiple
             className="p-1 border rounded-lg mr-4 ml-3"
             style={{ width: "400px", height: "150px" }}
@@ -278,7 +318,7 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
         </div>
 
         <div className="flex mb-4 items-center">
-          <label htmlFor="terminalPret" className="text-sm font-medium text-gray-700 mr-2 ">
+          <label htmlFor="Pretterminal" className="text-sm font-medium text-gray-700 mr-2 ">
             Terminal de prêt:
           </label>
           <div className="mr-4 ml-10">
@@ -288,6 +328,7 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
               name="avec"
               value="avec"
               className="mr-1 border-gray-300 rounded-full"
+              onChange={handleTerminalPretChange}
             />
             <label htmlFor="avec" className="mr-4">
               Avec
@@ -298,33 +339,36 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
               name="sans"
               value="sans"
               className="mr-1 border-gray-300 rounded-full"
+              onChange={handleTerminalPretChange}
             />
             <label htmlFor="sans">Sans</label>
           </div>
         </div>
 
         <div className="flex mb-4 items-center">
-          <label htmlFor="descriptionPanne" className="text-sm font-medium text-gray-700 mr-2">
+          <label htmlFor="descriptionn" className="text-sm font-medium text-gray-700 mr-2">
             Description de panne:
           </label>
           <input
             type="text"
-            name="descriptionPanne"
-            id="descriptionPanne"
+            name="descriptionn"
+            id="descriptionn"
             className="mt-1 p-2 border rounded-lg"
             style={{ width: "200px" }}
+            onChange={handleDescriptionChange}
           />
         </div>
 
         <div className="flex mb-4 items-center">
-          <label htmlFor="workflow" className="text-sm font-medium text-gray-700 mr-2">
+          <label htmlFor="workfloww" className="text-sm font-medium text-gray-700 mr-2">
             Choix de workflow:
           </label>
           <select
-            id="workflow"
-            name="workflow"
+            id="workfloww"
+            name="workfloww"
             className="p-1 border rounded-lg mr-4"
             style={{ width: "200px" }}
+            onChange={handleWorkflowChange}
           >
             <option value="externe">Réparateur externe</option>
             <option value="interne">Réparateur interne</option>
@@ -353,6 +397,8 @@ export default function FileCard({ onCancel, action, handleClientInfoChange }) {
 // Définir la validation de type pour les props
 FileCard.propTypes = {
   onCancel: PropTypes.func.isRequired,
-  action: PropTypes.string.isRequired,
+  action: PropTypes.func.isRequired,
   handleClientInfoChange: PropTypes.func.isRequired,
+  handleInterventionDataChange: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
 };
